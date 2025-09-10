@@ -1,0 +1,104 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 162525,
+  "links": [],
+  "panels": [
+    {
+      "datasource": null,
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 7, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "options": { "legend": { "displayMode": "list" } },
+      "targets": [
+        {
+          "expr": "report_queue_jobs",
+          "legendFormat": "{{state}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Report Queue Jobs by State",
+      "type": "timeseries"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 6, "w": 12, "x": 0, "y": 7 },
+      "id": 2,
+      "options": {},
+      "targets": [
+        {
+          "expr": "increase(bull_report_processing_failed_total{queue=\"report-processing\"}[5m])",
+          "legendFormat": "final-failures (5m)",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(bull_report_processing_failed_total{queue=\"report-processing\"}[5m])",
+          "legendFormat": "final-failure-rate (per sec)",
+          "refId": "B"
+        }
+      ],
+      "title": "Report Processing — Final Failures (5m)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 7 },
+      "id": 3,
+      "options": { "reduceOptions": { "calcs": ["last"], "fields": "", "values": false } },
+      "targets": [
+        {
+          "expr": "sum(civic_dead_letter_total{queue=\"report-processing\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "Dead Letters (report-processing)",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 7 },
+      "id": 4,
+      "options": { "reduceOptions": { "calcs": ["last"], "fields": "", "values": false } },
+      "targets": [
+        {
+          "expr": "sum(bull_notification_failed_total{queue=\"notifications\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "Notification Final Failures",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 6, "w": 12, "x": 0, "y": 13 },
+      "id": 5,
+      "options": {},
+      "targets": [
+        {
+          "expr": "sum(bull_report_processing_failed_total)",
+          "legendFormat": "final-failures (total)",
+          "refId": "A"
+        }
+      ],
+      "title": "Report Processing — Final Failures (total)",
+      "type": "timeseries"
+    }
+  ],
+  "schemaVersion": 27,
+  "style": "dark",
+  "tags": ["civic-connect"],
+  "templating": { "list": [] },
+  "time": { "from": "now-6h", "to": "now" },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Civic Connect - Queue & Failures Overview",
+  "uid": null,
+  "version": 3
+}

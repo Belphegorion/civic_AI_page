@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: civic-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: civic-backend
+  template:
+    metadata:
+      labels:
+        app: civic-backend
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/YOUR_ORG/civic-connect-backend:latest
+          env:
+            - name: MONGO_URI
+              value: mongodb://mongo:27017/civic_connect
+            - name: REDIS_URL
+              value: redis://redis:6379
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: civic-secrets
+                  key: jwt
+          ports:
+            - containerPort: 5000

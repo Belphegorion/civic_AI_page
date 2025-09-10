@@ -1,0 +1,42 @@
+groups:
+  - name: civic-connect-alerts
+    rules:
+      - alert: ReportProcessingFinalFailuresHigh
+        expr: |
+          increase(bull_report_processing_failed_total{queue="report-processing"}[15m]) >= 3
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High number of final (exhausted) failures in report-processing"
+          description: ">= 3 final failures in the report-processing queue within 15m."
+
+      - alert: NotificationFinalFailuresHigh
+        expr: |
+          increase(bull_notification_failed_total{queue="notifications"}[15m]) >= 3
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High number of final failures in notifications queue"
+          description: ">= 3 final notification failures in 15m."
+
+      - alert: ReportQueueLongWaiting
+        expr: |
+          report_queue_jobs{state="waiting"} > 50
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Report queue backlogged"
+          description: "More than 50 waiting jobs in report queue for >5m"
+
+      - alert: DeadLetterExists
+        expr: |
+          sum(civic_dead_letter_total{queue="report-processing"}) > 0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Dead letters exist (report-processing)"
+          description: "One or more jobs have been persisted to the dead-letter store for report-processing."

@@ -1,0 +1,10 @@
+﻿# enforce LF in the repository for all text files
+* text=auto eol=lf
+
+# binary files (do not touch)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.zip binary
+*.pdf binary

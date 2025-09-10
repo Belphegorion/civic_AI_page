@@ -1,0 +1,39 @@
+name: Deploy via SSH (docker-compose)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy to remote host
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.8.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Run remote deploy commands via SSH
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            set -e
+            echo "Deploying to remote host ${SSH_HOST:-unknown}"
+            cd "${{ secrets.REMOTE_COMPOSE_DIR || '/opt/civic-connect' }}"
+            # Pull latest images (assumes images are pushed to your registry)
+            docker compose pull || true
+            docker compose up -d --remove-orphans
+            docker image prune -f || true
+            echo "Deployment finished"

@@ -16,15 +16,26 @@ const generateToken = (id) => {
 exports.register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
-    const existing = await User.findOne({ email });
-    if (existing) {
-      logger.warn('Register attempt with existing email=%s', email);
-      return next(new AppError('Email already registered', 400));
+
+    // Basic validation
+    if (!name || !email || !password) {
+      return next(new AppError('Please provide name, email, and password', 400));
     }
-    const user = await User.create({ name, email, password });
-    logger.info('New user registered id=%s email=%s', user._id, user.email);
-    res.status(201).json({ token: generateToken(user._id), user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+
+    await User.create({ name, email, password });
+    logger.info('New user registered email=%s', email);
+
+    // Always return the same generic message to prevent user enumeration
+    res.status(201).json({ message: 'Registration successful. Please proceed to login.' });
+
   } catch (err) {
+    // Check for MongoDB duplicate key error
+    if (err.code === 11000) {
+      logger.warn('Registration attempt with existing email=%s. Responding with generic success message to prevent enumeration.', req.body.email);
+      // Still return a "successful" response to prevent user enumeration
+      return res.status(201).json({ message: 'Registration successful. Please proceed to login.' });
+    }
+
     logger.error('Register error: %s', err.message);
     next(err);
   }
@@ -33,7 +44,7 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select('+password'); // Explicitly select password
     if (!user) {
       logger.warn('Login failed for email=%s', email);
       return next(new AppError('Invalid credentials', 401));
@@ -52,5 +63,9 @@ exports.login = async (req, res, next) => {
 };
 
 exports.me = async (req, res) => {
+  // req.user is populated by the 'protect' middleware
+  if (!req.user) {
+    return next(new AppError('User not found', 404));
+  }
   res.json(req.user);
 };

@@ -152,3 +152,75 @@
 {"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-09T22:40:30.209Z"}
 {"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-09T22:40:38.321Z"}
 {"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-09T22:40:38.322Z"}
+{"level":"info","message":"Prometheus metrics endpoint enabled at /metrics","timestamp":"2025-09-11T17:37:25.522Z"}
+{"level":"info","message":"Server running on port 5000 in env=development","timestamp":"2025-09-11T17:37:25.970Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:26.034Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:26.035Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:26.049Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:26.054Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:26.069Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:26.071Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:26.094Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:26.095Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:26.155Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:26.156Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:26.308Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:26.308Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:26.715Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:26.717Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:27.815Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:27.816Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:30.799Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:37:30.800Z"}
+{"level":"info","message":"Prometheus metrics endpoint enabled at /metrics","timestamp":"2025-09-11T17:38:47.658Z"}
+{"level":"info","message":"Server running on port 5000 in env=development","timestamp":"2025-09-11T17:38:48.243Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:48.309Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:48.311Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:48.336Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:48.337Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:48.357Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:48.363Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:48.387Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:48.388Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:48.450Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:48.451Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:48.604Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:48.605Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:49.010Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:49.011Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:50.108Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:38:50.110Z"}
+{"level":"info","message":"Prometheus metrics endpoint enabled at /metrics","timestamp":"2025-09-11T17:41:40.877Z"}
+{"level":"info","message":"Server running on port 5000 in env=development","timestamp":"2025-09-11T17:41:41.157Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:41.172Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:41.172Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:41.184Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:41.184Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:41.193Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:41.198Z"}
+{"level":"info","message":"Prometheus metrics endpoint enabled at /metrics","timestamp":"2025-09-11T17:41:46.524Z"}
+{"level":"info","message":"Server running on port 5000 in env=development","timestamp":"2025-09-11T17:41:46.759Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:46.773Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:46.774Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:46.784Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:46.784Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:46.793Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:46.794Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:46.815Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:46.817Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:46.871Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:46.872Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:47.021Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:47.022Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:47.426Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:41:47.427Z"}
+{"level":"info","message":"Prometheus metrics endpoint enabled at /metrics","timestamp":"2025-09-11T17:42:30.653Z"}
+{"level":"info","message":"Server running on port 5000 in env=development","timestamp":"2025-09-11T17:42:30.966Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:42:30.984Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:42:30.986Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:42:30.999Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:42:30.999Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:42:31.016Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:42:31.017Z"}
+{"level":"error","message":"NotificationQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:42:31.039Z"}
+{"level":"error","message":"ReportQueue error: connect ECONNREFUSED 127.0.0.1:6379","timestamp":"2025-09-11T17:42:31.040Z"}

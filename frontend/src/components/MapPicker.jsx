@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
+import React, { useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css'; // Ensure CSS is loaded as a safeguard
 
 function LocationMarker({ onChange }) {
   const [position, setPosition] = useState(null);
-  const map = useMap();
 
   useMapEvents({
     click(e) {
@@ -13,15 +13,6 @@ function LocationMarker({ onChange }) {
     },
   });
 
-  // Try to get user's location on component mount
-  useEffect(() => {
-    map.locate().on("locationfound", function (e) {
-      map.flyTo(e.latlng, map.getZoom());
-      setPosition(e.latlng);
-      onChange(e.latlng);
-    });
-  }, [map, onChange]);
-
   return position === null ? null : (
     <Marker position={position}>
       <Popup>Selected location</Popup>
@@ -29,28 +20,28 @@ function LocationMarker({ onChange }) {
   );
 }
 
-export default function MapPicker({ center = [20, 0], zoom = 2, selected, onChange }) {
+export default function MapPicker({ selected, onChange }) {
+  // Default to a central location if no location is selected yet
+  const mapCenter = selected ? [selected.lat, selected.lng] : [51.505, -0.09];
+  const zoom = selected ? 13 : 3;
+
   return (
-    <div className="relative h-64 border rounded overflow-hidden">
+    <div className="h-80 w-full border rounded">
       <MapContainer 
-        center={selected || center} 
+        center={mapCenter}
         zoom={zoom} 
         style={{ height: '100%', width: '100%' }}
-        className="z-10"
+        scrollWheelZoom={false} // Common practice for maps in forms
       >
         <TileLayer 
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         <LocationMarker onChange={onChange} />
-        {selected && !isNaN(selected.lat) && !isNaN(selected.lng) && (
-          <Marker position={[selected.lat, selected.lng]}>
-            <Popup>Selected location</Popup>
-          </Marker>
-        )}
+        {/* The LocationMarker now handles showing the selected position */}
       </MapContainer>
-      <div className="absolute bottom-2 left-2 right-2 z-20 bg-white bg-opacity-90 p-2 rounded text-sm text-gray-600">
-        Click on the map to select a location or allow location access to use your current position
+      <div className="p-2 bg-gray-100 text-center text-sm text-gray-700">
+        Click on the map to select a precise location.
       </div>
     </div>
   );

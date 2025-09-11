@@ -1,30 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    // Simulate loading
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
-
-  if (loading) return <div className="p-6">Loading...</div>;
-  if (error) return <div className="p-6 text-red-500">{error}</div>;
-
   return (
-    <div className="p-6 max-w-4xl mx-auto text-center">
-      <Card className="p-8">
-        <h1 className="text-3xl font-bold mb-4">Welcome to Civic Connect</h1>
-        <p className="text-slate-600 mb-6">Report issues in your city and track progress. Use the Report page to capture photos and location.</p>
-        <div className="flex justify-center gap-3">
-          <Link to="/report"><Button>Create Report</Button></Link>
-          <Link to="/reports"><Button variant="ghost">View Reports</Button></Link>
+    <div className="min-h-[calc(100vh-200px)] flex items-center justify-center p-4">
+      <div className="text-center">
+        <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4 tracking-tight">
+          Make Your Voice Heard
+        </h1>
+        <p className="text-lg text-secondary mb-8 max-w-2xl mx-auto">
+          Civic Connect is the easiest way to report non-emergency issues to your local government.
+        </p>
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <Link to="/report">
+            <Button size="lg" className="w-full sm:w-auto">Submit a New Report</Button>
+          </Link>
+          <Link to="/reports">
+            <Button size="lg" variant="secondary" className="w-full sm:w-auto">
+              View Public Reports
+            </Button>
+          </Link>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

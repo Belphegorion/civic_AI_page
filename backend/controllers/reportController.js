@@ -143,15 +143,21 @@ exports.updateStatus = async (req, res, next) => {
       return next(new AppError('Status is required', 400));
     }
     
-    const report = await Report.findById(id);
+    const report = await Report.findById(id).populate('assignedToDepartment');
     if (!report) {
       logger.warn('updateStatus report not found id=%s', id);
       return next(new AppError('Report not found', 404));
     }
+
+    // Authorization check: staff can only update reports assigned to their department
+    if (req.user.role === 'staff' && report.assignedToDepartment._id.toString() !== req.user.assignedToDepartment.toString()) {
+      logger.warn('Forbidden updateStatus user=%s report=%s', req.user._id, report._id);
+      return next(new AppError('You are not authorized to update this report', 403));
+    }
     
     // Update report
     report.status = status;
-    if (assignedToDepartment) {
+    if (assignedToDepartment && req.user.role === 'admin') { // only admin can re-assign
       report.assignedToDepartment = assignedToDepartment;
     }
     await report.save();

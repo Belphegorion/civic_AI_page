@@ -2,7 +2,7 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const upload = require('../middleware/upload');
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 const { createReport, getReports, updateStatus, getDepartmentReports, getMyReports } = require('../controllers/reportController');
 
 const router = express.Router();
@@ -34,6 +34,6 @@ router.post('/', protect, upload.fields([{ name: 'images', maxCount: 4 }, { name
 router.get('/', getReports); // Public access for viewing reports
 router.get('/my', protect, getMyReports); // User's own reports
 router.get('/department', protect, getDepartmentReports); // Department-specific reports
-router.put('/:id/status', protect, updateStatus);
+router.put('/:id/status', protect, authorize('admin', 'staff'), updateStatus);
 
 module.exports = router;

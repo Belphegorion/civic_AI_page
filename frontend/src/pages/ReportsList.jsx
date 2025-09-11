@@ -1,189 +1,129 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import { connectSocket } from '../services/socket';
-import { MapContainer, TileLayer, Marker, Popup, CircleMarker } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
 import Card from '../components/ui/Card';
+import Button from '../components/ui/Button';
+
+// A mapping for colors to avoid complex functions in the render part
+const priorityStyles = {
+  critical: { color: '#ef4444', radius: 12 },
+  high: { color: '#f97316', radius: 10 },
+  medium: { color: '#f59e0b', radius: 8 },
+  low: { color: '#22c55e', radius: 6 },
+  default: { color: '#6b7280', radius: 5 },
+};
+
+const ReportItem = ({ report }) => {
+  const { color } = priorityStyles[report.priority] || priorityStyles.default;
+  return (
+    <Card className="mb-4">
+      <div className="flex justify-between items-start">
+        <div>
+          <h3 className="font-semibold text-primary">{report.title}</h3>
+          <p className="text-sm text-secondary capitalize">
+            {report.category?.replace(/_/g, ' ')} - <span className="font-medium">{report.status}</span>
+          </p>
+        </div>
+        <span className="text-xs font-bold uppercase px-2 py-1 rounded-full text-white" style={{ backgroundColor: color }}>
+          {report.priority}
+        </span>
+      </div>
+      {report.description && <p className="mt-2 text-sm text-secondary">{report.description}</p>}
+    </Card>
+  );
+};
 
 export default function ReportsList() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState({ status: '', category: '', priority: '' });
-  const [showHeatmap, setShowHeatmap] = useState(false);
-
-  const fetch = async () => {
-    try {
-      setLoading(true);
-      const params = new URLSearchParams();
-      if (filter.status) params.append('status', filter.status);
-      if (filter.category) params.append('category', filter.category);
-      if (filter.priority) params.append('priority', filter.priority);
-      
-      const res = await api.get(`/reports?${params.toString()}`);
-      // Handle new API response format with pagination
-      setReports(res.data.reports || res.data);
-    } catch (err) {
-      console.error('Failed to fetch reports:', err);
-      // Could add user-friendly error message here
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [view, setView] = useState('list'); // 'list' or 'map'
 
   useEffect(() => {
-    fetch();
-    const socket = connectSocket();
-    
-    const handleReportCreated = (r) => setReports(prev => [r, ...prev]);
-    const handleReportUpdated = (r) => setReports(prev => prev.map(p => p._id === r._id ? r : p));
-    const handleReportProcessed = (r) => setReports(prev => prev.map(p => p._id === r._id ? r : p));
-    
-    socket.on('report:created', handleReportCreated);
-    socket.on('report:updated', handleReportUpdated);
-    socket.on('report:processed', handleReportProcessed);
-    
-    return () => {
-      socket.off('report:created', handleReportCreated);
-      socket.off('report:updated', handleReportUpdated);
-      socket.off('report:processed', handleReportProcessed);
+    const fetchReports = async () => {
+      try {
+        setLoading(true);
+        const res = await api.get('/reports');
+        setReports(res.data.reports || []);
+      } catch (err) {
+        console.error('Failed to fetch reports:', err);
+      } finally {
+        setLoading(false);
+      }
     };
-  }, [filter]);
 
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case 'critical': return '#dc2626'; // red
-      case 'high': return '#ea580c'; // orange
-      case 'medium': return '#d97706'; // amber
-      case 'low': return '#16a34a'; // green
-      default: return '#6b7280'; // gray
-    }
-  };
+    fetchReports();
+    const socket = connectSocket();
 
-  const getPriorityRadius = (priority) => {
-    switch (priority) {
-      case 'critical': return 12;
-      case 'high': return 10;
-      case 'medium': return 8;
-      case 'low': return 6;
-      default: return 5;
-    }
-  };
+    const handleReportUpdate = (updatedReport) => {
+      setReports(prev => prev.map(r => r._id === updatedReport._id ? updatedReport : r));
+    };
+    const handleReportCreate = (newReport) => {
+        setReports(prev => [newReport, ...prev]);
+    };
+
+    socket.on('report:created', handleReportCreate);
+    socket.on('report:updated', handleReportUpdate);
+    socket.on('report:processed', handleReportUpdate);
+
+    return () => {
+      socket.off('report:created', handleReportCreate);
+      socket.off('report:updated', handleReportUpdate);
+      socket.off('report:processed', handleReportUpdate);
+    };
+  }, []);
 
   if (loading) {
-    return (
-      <div className="p-6 flex items-center justify-center min-h-96">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-600 mx-auto mb-4"></div>
-          <p className="text-slate-600">Loading reports...</p>
-        </div>
-      </div>
-    );
+    return <div className="text-center p-8">Loading reports...</div>;
   }
 
   return (
-    <div className="p-3 md:p-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
-            <h3 className="text-lg font-semibold">Reported issues</h3>
-            <div className="flex flex-wrap gap-2">
-              <select 
-                value={filter.status} 
-                onChange={(e) => setFilter(prev => ({ ...prev, status: e.target.value }))}
-                className="text-xs px-2 py-1 border rounded"
-              >
-                <option value="">All Status</option>
-                <option value="submitted">Submitted</option>
-                <option value="assigned">Assigned</option>
-                <option value="in_progress">In Progress</option>
-                <option value="resolved">Resolved</option>
-              </select>
-              <select 
-                value={filter.category} 
-                onChange={(e) => setFilter(prev => ({ ...prev, category: e.target.value }))}
-                className="text-xs px-2 py-1 border rounded"
-              >
-                <option value="">All Categories</option>
-                <option value="pothole">Pothole</option>
-                <option value="streetlight">Streetlight</option>
-                <option value="trash">Trash</option>
-                <option value="water_leak">Water Leak</option>
-                <option value="tree_hazard">Tree Hazard</option>
-              </select>
-              <select 
-                value={filter.priority} 
-                onChange={(e) => setFilter(prev => ({ ...prev, priority: e.target.value }))}
-                className="text-xs px-2 py-1 border rounded"
-              >
-                <option value="">All Priorities</option>
-                <option value="critical">Critical</option>
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
-              </select>
-            </div>
-          </div>
-          <Card className="h-64 md:h-96 overflow-hidden">
-            <MapContainer 
-              center={[20,0]} 
-              zoom={2} 
-              style={{ height: '100%', width: '100%' }}
-              className="z-0"
-            >
-              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-              {reports.map(r => (
+    <div className="container mx-auto p-4">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Public Reports</h1>
+        <div>
+          <Button variant={view === 'list' ? 'default' : 'secondary'} onClick={() => setView('list')} className="mr-2">List</Button>
+          <Button variant={view === 'map' ? 'default' : 'secondary'} onClick={() => setView('map')}>Map</Button>
+        </div>
+      </div>
+
+      {view === 'list' && (
+        <div>
+          {reports.length > 0 ? (
+            reports.map(report => <ReportItem key={report._id} report={report} />)
+          ) : (
+            <p className="text-center text-secondary">No reports found.</p>
+          )}
+        </div>
+      )}
+
+      {view === 'map' && (
+        <Card className="h-[600px] p-0 overflow-hidden">
+          <MapContainer center={[20, 0]} zoom={2} style={{ height: '100%', width: '100%' }}>
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            {reports.map(report => {
+               const { color, radius } = priorityStyles[report.priority] || priorityStyles.default;
+               return (
                 <CircleMarker
-                  key={r._id}
-                  center={[r.location.coordinates[1], r.location.coordinates[0]]}
-                  radius={getPriorityRadius(r.priority)}
-                  color={getPriorityColor(r.priority)}
-                  fillColor={getPriorityColor(r.priority)}
+                  key={report._id}
+                  center={[report.location.coordinates[1], report.location.coordinates[0]]}
+                  radius={radius}
+                  color={color}
+                  fillColor={color}
                   weight={2}
                   opacity={0.8}
-                  fillOpacity={0.3}
+                  fillOpacity={0.4}
                 >
                   <Popup>
-                    <div className="text-sm">
-                      <strong>{r.title}</strong>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className={`px-2 py-1 text-xs rounded-full text-white`} 
-                              style={{ backgroundColor: getPriorityColor(r.priority) }}>
-                          {r.priority?.toUpperCase() || 'MEDIUM'}
-                        </span>
-                        <span>{r.category} — {r.status}</span>
-                      </div>
-                      <div className="text-xs mt-1">{r.description?.slice(0,120)}</div>
-                    </div>
+                    <div className="font-semibold">{report.title}</div>
+                    <div className="text-sm capitalize">{report.category?.replace(/_/g, ' ')} - {report.status}</div>
                   </Popup>
                 </CircleMarker>
-              ))}
-            </MapContainer>
-          </Card>
-        </div>
-
-        <aside className="space-y-3">
-          <h3 className="text-lg font-semibold">List ({reports.length})</h3>
-          <div className="space-y-2 max-h-64 md:max-h-96 overflow-auto">
-            {reports.length === 0 ? (
-              <div className="text-center text-slate-500 py-8">No reports found</div>
-            ) : (
-              reports.map(r => (
-                <div key={r._id} className="p-2 border rounded hover:bg-slate-50 cursor-pointer">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="font-semibold text-sm md:text-base">{r.title}</div>
-                      <div className="text-xs text-slate-600">{r.category} — {r.status}</div>
-                    </div>
-                    <span className={`px-2 py-1 text-xs rounded-full text-white ml-2`} 
-                          style={{ backgroundColor: getPriorityColor(r.priority) }}>
-                      {r.priority?.toUpperCase() || 'MEDIUM'}
-                    </span>
-                  </div>
-                </div>
-              ))
+              )}
             )}
-          </div>
-        </aside>
-      </div>
+          </MapContainer>
+        </Card>
+      )}
     </div>
   );
 }
